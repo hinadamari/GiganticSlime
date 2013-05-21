@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
@@ -36,18 +37,19 @@ public class GiganticSlime extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerInteractSlime(PlayerInteractEntityEvent event) {
 
-    	if (!event.getPlayer().hasPermission("giganticslime.feed")) return;
-
     	Player p = event.getPlayer();
 
-    	if (event.getRightClicked() instanceof MagmaCube) {
+    	if (!p.hasPermission("giganticslime.feed")) return;
+
+    	if (event.getRightClicked().getType() == EntityType.MAGMA_CUBE) {
 
     		if (p.getItemInHand().getType() != Material.MAGMA_CREAM) return;
 
     		MagmaCube slime = (MagmaCube) event.getRightClicked();
     		int hp = slime.getHealth();
 
-    		if (hp + 1 > Math.pow(slime.getSize(), 2)) {
+    		// 体力が一定量を超えていればサイズと最大体力を増やす
+    		if (hp >= Math.pow(slime.getSize(), 2)) {
     			if (slime.getSize() >= 100) {
     				p.sendMessage(ChatColor.YELLOW + "これ以上大きく出来ません");
     				return;
@@ -58,14 +60,15 @@ public class GiganticSlime extends JavaPlugin implements Listener {
     		slime.setHealth(hp + 1);
     		p.playEffect(slime.getLocation(), Effect.MOBSPAWNER_FLAMES, 0);
 
-    	} else if (event.getRightClicked() instanceof Slime) {
+    	} else if (event.getRightClicked().getType() == EntityType.SLIME) {
 
     		if (p.getItemInHand().getType() != Material.SLIME_BALL) return;
 
     		Slime slime = (Slime) event.getRightClicked();
     		int hp = slime.getHealth();
 
-    		if (hp + 1 > Math.pow(slime.getSize(), 2)) {
+    		// 体力が一定量を超えていればサイズと最大体力を増やす
+    		if (hp >= Math.pow(slime.getSize(), 2)) {
     			if (slime.getSize() >= 100) {
     				p.sendMessage(ChatColor.YELLOW + "これ以上大きく出来ません");
     				return;
