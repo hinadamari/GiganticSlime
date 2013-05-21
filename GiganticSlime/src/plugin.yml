@@ -1,0 +1,11 @@
+##  Plugin Information  ##
+name: GiganticSlime
+version: 1.0
+main: hinadamari.giganticslime.GiganticSlime
+##  Original Author     ##
+author: hinadamari
+##  Permissions         ##
+permissions:
+    giganticslime.feed:
+        description: Allow to feed slime ball
+        default: op
